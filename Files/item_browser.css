@@ -1,11 +1,11 @@
-* {
+.browser {
     font-family: Muli, Arial, Verdana, sans-serif;
     font-size: 14px;
 }
 
 #item_live_search {
-    float: left;
     width: 93%;
+    height: 19px;
     background-color: #555555;
     border: 1px solid #777777;
     color: white;
@@ -31,6 +31,23 @@
 #browser_results {
     list-style-type: none;
     padding-left: 0;
+
+}
+
+.browser_result:nth-child(even) {
+    background-color: #444444;
+}
+
+.browser_result:nth-child(odd) {
+    background-color: #666666;
+}
+
+.browser_result:nth-child(even):hover {
+    background-color: #555555;
+}
+
+.browser_result:nth-child(odd):hover {
+    background-color: #777777;
 }
 
 img.browser_result_image {
@@ -46,8 +63,8 @@ img.browser_result_image {
     position: absolute;
     top: 5px;
     right: 5px;
-    width: 18px;
-    height: 18px;
+    width: 17px;
+    height: 17px;
     background-color: #555555;
     border: 1px solid #777777;
     color: #777777;
@@ -57,6 +74,31 @@ img.browser_result_image {
 
 #browser_close:hover {
     background-color: #666666;
+}
+
+.tint {
+    position: relative;
+    float: left;
+    cursor: pointer;
+}
+
+.tint:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,255,255, 0.5);
+    -moz-transition: background .3s linear;
+    -webkit-transition: background .3s linear;
+    -o-transition: background .3s linear;
+    transition: background .3s linear;
+}
+
+.tint:hover:before {
+    background: none;
 }
 
 /*#notification_popin {
