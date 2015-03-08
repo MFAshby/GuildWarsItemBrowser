@@ -3,7 +3,32 @@
  */
 
 function price_tracker() {
-    var price_url_root = "https://api.guildwars2.com/v2/commerce/prices?ids=";
+    const tracked_items_key = "tracked_items";
+    const price_url_root = "https://api.guildwars2.com/v2/commerce/prices?ids=";
+
+    // A list of the item IDs that I'm currently tracking
+    function get_tracked_from_storage() {
+        const tracked_items_version_key = "tracked_items_version";
+        const tracked_items_version = "2";
+
+        var tracked_items = [];
+        var local_tracked_items_version = localStorage[tracked_items_version_key];
+        var tracked_items_string = localStorage[tracked_items_key];
+        if ((local_tracked_items_version === tracked_items_version)
+            && tracked_items_string) {
+            tracked_items = JSON.parse(tracked_items_string);
+            console.log("got " + tracked_items.length + " stored tracked items");
+        } else {
+            localStorage[tracked_items_version_key] = tracked_items_version;
+        }
+        return tracked_items;
+    }
+
+    function save_tracked_items_to_storage(tracked_items) {
+        localStorage[tracked_items_key] = JSON.stringify(tracked_items);
+    }
+
+    var tracked_items = get_tracked_from_storage();
 
     // Format prices using the coin icons
     function format_price(price){
@@ -28,9 +53,6 @@ function price_tracker() {
         }
         return $price_description;
     }
-
-    // A list of the item IDs that I'm currently tracking
-    var tracked_items = [];
 
     // A tab at the side of the screen to reveal the price tracker
     var $reveal_button = $('<div id="reveal_tracked_items">Prices</div>');
@@ -72,6 +94,8 @@ function price_tracker() {
     function rebuild_item_list(){
         $item_list.display_all_item_ids(tracked_items);
     }
+    // Call it once it's defined.
+    rebuild_item_list();
 
     // Add an item list for the currently tracked items
     function list_callback($li, item_id) {
@@ -118,6 +142,7 @@ function price_tracker() {
             var index = tracked_items.indexOf("" + item_id);
             if (index > -1) {
                 tracked_items.splice(index, 1);
+                save_tracked_items_to_storage(tracked_items);
                 rebuild_item_list();
             }
         });
@@ -135,6 +160,7 @@ function price_tracker() {
     function browser_callback($li, item_id) {
         console.log("browser_callback called");
         tracked_items.push(item_id);
+        save_tracked_items_to_storage(tracked_items);
         $item_list.display_all_item_ids(tracked_items);
         $item_browser.hide(150);
     }
