@@ -2,99 +2,52 @@
  * Created by Martin on 03/03/2015.
  */
 
-function add_browser($browser, callback) {
+function item_browser(browser_callback) {
     // Useful URLs
     var search_url_root = "http://localhost:8080?search=";
-    var item_url_root = "https://api.guildwars2.com/v2/items/?ids=";
 
     // Set up components
-    var $form = $('<form></form>');
-    var $searchLabel = $('<label for="item_live_search"></label>');
-    var $itemLiveSearch = $('<input id="item_live_search" type="text" size="30" placeholder="Search for items">');
-    var $browserResults = $('<ul id="browser_results"></ul>');
-    var $browserClose = $('<div id="browser_close">x</div>');
+    var $browser = $('<div id="browser" class="browser_element"></div>');
+    var $search = $('<input id="browser_search" class="browser_element" type="text" size="30" placeholder="Search for items" autocomplete="off">');
+    var $results = item_list(browser_callback);
+    var $close = $('<div id="browser_close" class="browser_element">x</div>');
 
-    $form.append($searchLabel);
-    $form.append($itemLiveSearch);
-    $browser.append($form);
-    $browser.append($browserResults);
-    $browser.append($browserClose);
+    //$form.append($itemLiveSearch);
+    $browser.append($search);
+    $browser.append($close);
+    $browser.append($results);
 
-    function item_selected(link) {
-        var item_id = $(link.currentTarget).attr("item_id");
-        callback(item_id);
-    }
 
-    function add_item(item_data) {
-        var item_id = item_data.id;
-        var name = item_data.name;
-        var icon_url = item_data.icon;
+    $browser.show_browser = function() {
+        $browser.show(150);
+        $search.focus();
+    };
 
-        var $li = $('<li class="browser_result"></li>');
-        var $img = $('<img class="browser_result_image"/>');
-
-        $li.attr("item_id", "" + item_id);
-        $li.click(item_selected);
-        $img.attr("src", icon_url);
-        $li.append($img);
-        $li.append(name);
-        $browserResults.append($li);
-    }
-
-    function add_new_items(items_list) {
-        var items_string = items_list.join(",");
-        // Get the item details from the GW2 API
-        $.get(item_url_root + items_string, function(items_data) {
-            // Add an item to the browser results
-            for (var i=0; i<items_data.length; i++) {
-                var item_data = items_data[i];
-                add_item(item_data);
-            }
-        });
-    }
-
-    $browserClose.click(function() {
+    $close.click(function() {
         $browser.hide(150);
     });
 
+    // On timeout, get results from the search API, and pass them to the item list.
     var timer;
-    $itemLiveSearch.keyup(function() {
+    $search.keyup(function() {
         clearTimeout(timer);
-        var search_text = $itemLiveSearch.val();
+        var search_text = $search.val();
         timer = setTimeout(function() {
+            if (search_text === "") {
+                console.log("Empty search, clearing");
+                $results.empty();
+                return;
+            }
+
+            console.log("Calling search API");
             var search_url = search_url_root + search_text;
-            $.get(search_url, function(data) {
-                var items_list = data;
-                $browserResults.empty();
-                add_new_items(items_list);
+            $results.append("Searching...");
+            $.get(search_url, function(item_ids_list) {
+                console.log("Search API call finished");
+                $results.display_all_item_ids(item_ids_list);
             });
         }, 200);
     });
 
-    /*function handle_price_data(data) {
-        // Parse the interesting info out of the data.
-        $notificationPopin.text("Now selling for " + data.sells.unit_price);
-        $notificationPopin.show(350);
-    }
-
-    // Start polling the GW2 API to see when the price changes
-    (function poll() {
-        setTimeout(function() {
-            $.ajax({
-                url: prices_url_root + "19684",
-                success: handle_price_data,
-                dataType: "json",
-                complete: poll
-            });
-        }, 30000)
-    })();*/
+    return $browser;
 }
-
-$(document).ready(function() {
-
-    function callback(item_id) {
-        console.log(item_id);
-    }
-
-    add_browser($('#browser'), callback);
-});

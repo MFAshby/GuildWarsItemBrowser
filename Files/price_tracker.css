@@ -1,0 +1,31 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    font-family: Muli, Arial, Verdana, sans-serif;
+    font-size: 14px;
+    color: white;
+}
+
+#tracked_items {
+    background-color: black;
+}
+
+.popup_remove {
+    position: absolute;
+    top: 10px;
+    right:10px;
+    width:200px;
+    height:200px;
+    background-color: #999999;
+    color: blue;
+}
+
+.add_item {
+    background-color: #999999;
+    color: white;
+    width: 90px;
+    height: 20px;
+    cursor: pointer;
+}
