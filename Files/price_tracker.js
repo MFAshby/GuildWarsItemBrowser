@@ -4,54 +4,66 @@
 
 function price_tracker() {
     const tracked_items_key = "tracked_items";
+    const notification_storage_key_prefix = "notification_item_id_";
     const price_url_root = "https://api.guildwars2.com/v2/commerce/prices?ids=";
 
-    // A list of the item IDs that I'm currently tracking
-    function get_tracked_from_storage() {
-        const tracked_items_version_key = "tracked_items_version";
-        const tracked_items_version = "2";
-
-        var tracked_items = [];
-        var local_tracked_items_version = localStorage[tracked_items_version_key];
-        var tracked_items_string = localStorage[tracked_items_key];
-        if ((local_tracked_items_version === tracked_items_version)
-            && tracked_items_string) {
-            tracked_items = JSON.parse(tracked_items_string);
-            console.log("got " + tracked_items.length + " stored tracked items");
+    function check_storage_version() {
+        const storage_version_key = "tracked_items_version";
+        const storage_version = "3";
+        var local_storage_version = localStorage[storage_version_key];
+        if (local_storage_version === storage_version) {
+            return true;
         } else {
-            localStorage[tracked_items_version_key] = tracked_items_version;
+            localStorage.clear();
+            localStorage[storage_version_key] = storage_version;
         }
-        return tracked_items;
     }
 
-    function save_tracked_items_to_storage(tracked_items) {
-        localStorage[tracked_items_key] = JSON.stringify(tracked_items);
+    function save_object_to_storage(key, object_array) {
+        localStorage[key] = JSON.stringify(object_array);
     }
 
-    var tracked_items = get_tracked_from_storage();
+    function get_object_array_from_storage(key) {
+        var object_array = [];
+        var object_string = localStorage[key];
+        if (check_storage_version() && object_string) {
+            object_array = JSON.parse(object_string);
+        }
+        return object_array;
+    }
+
+    var tracked_items = get_object_array_from_storage(tracked_items_key);
 
     // Format prices using the coin icons
     function format_price(price){
-        var ncopper = price % 100;
-        var nsilver = Math.round(price / 100) % 100;
-        var ngold = Math.round((price / 10000));
+        var price_obj = split_price(price);
         var $price_description = $('<span></span>');
-        if (ngold > 0) {
-            $price_description.append("" + ngold);
+        if (price_obj.ngold > 0) {
+            $price_description.append("" + price_obj.ngold);
             $price_description.append($('<img src="Gold_coin.png"/>'));
         }
-        if (nsilver > 0) {
-            $price_description.append("" + nsilver);
+        if (price_obj.nsilver > 0) {
+            $price_description.append("" + price_obj.nsilver);
             $price_description.append($('<img src="Silver_coin.png"/>'));
         }
-        if (ncopper > 0) {
-            $price_description.append("" + ncopper);
+        if (price_obj.ncopper > 0) {
+            $price_description.append("" + price_obj.ncopper);
             $price_description.append($('<img src="Copper_coin.png"/>'));
         }
         if ($price_description.text() === "") {
             $price_description.text('No cost!');
         }
         return $price_description;
+    }
+
+    function split_price(price) {
+        var ncopper = price % 100;
+        var nsilver = Math.round(price / 100) % 100;
+        var ngold = Math.round((price / 10000));
+        return {ngold:ngold, nsilver:nsilver, ncopper: ncopper};
+    }
+    function unsplit_price(gold, silver, copper) {
+        return (10000 * parseInt(gold)) + (100 * parseInt(silver)) + parseInt(copper);
     }
 
     // A tab at the side of the screen to reveal the price tracker
@@ -142,12 +154,12 @@ function price_tracker() {
             var index = tracked_items.indexOf("" + item_id);
             if (index > -1) {
                 tracked_items.splice(index, 1);
-                save_tracked_items_to_storage(tracked_items);
+                save_object_to_storage(tracked_items_key, tracked_items);
                 rebuild_item_list();
             }
         });
         $set_price_button.click(function () {
-
+            show_notification_settings($li, item_data);
         });
 
         // Keep a reference to this so we can manipulate it later
@@ -160,32 +172,122 @@ function price_tracker() {
     function browser_callback($li, item_id) {
         console.log("browser_callback called");
         tracked_items.push(item_id);
-        save_tracked_items_to_storage(tracked_items);
+        save_object_to_storage(tracked_items_key, tracked_items);
         $item_list.display_all_item_ids(tracked_items);
         $item_browser.hide(150);
     }
 
-    /*setTimeout(function() {
-        $browser.show(150);
-    }, 3000);*/
+    function show_notification_settings($li, item_data) {
+        // Check for existing notifications for this item id
+        var $notification_div = $('<div class="notification_settings">Notify me when the ' +
+        '<select id="buy_sell_select" class="notification_select">' +
+        '<option value="buys">buy</option>' +
+        '<option value="sells">sell</option>' +
+        '</select>' +
+        'price of ' + item_data.name +
+        ' is ' +
+        '<select id="operator_select" class="notification_select">' +
+        '<option value="gt">greater than</option>' +
+        '<option value="lt">less than</option>' +
+        '</select>' +
+        '<input id="ngold" class="notification_number_entry" type="number" min="0">' +
+        '<img src="Gold_coin.png"/>' +
+        '<input id="nsilver" class="notification_number_entry" type="number" min="0">' +
+        '<img src="Silver_coin.png"/>' +
+        '<input id="ncopper" class="notification_number_entry" type="number" min="0">' +
+        '<img src="Copper_coin.png"/>' +
+        '<button id="save" class="tracker_button">Save</button>' +
+        '<button id="delete" class="tracker_button">Delete</button>' +
+        '<button id="close" class="tracker_button">Close</button>' +
+        '</div>');
 
-    /*function handle_price_data(data) {
-    // Parse the interesting info out of the data.
-    $notificationPopin.text("Now selling for " + data.sells.unit_price);
-    $notificationPopin.show(350);
+        var $buy_sell_select = $notification_div.find('#buy_sell_select');
+        var $operator_select = $notification_div.find('#operator_select');
+        var $ngold = $notification_div.find('#ngold');
+        var $nsilver = $notification_div.find('#nsilver');
+        var $ncopper = $notification_div.find('#ncopper');
+        var $notification_save_button = $notification_div.find('#save');
+        var $notification_delete_button = $notification_div.find('#delete');
+        var $notification_close_button = $notification_div.find('#close');
+
+        // Pre-populate with existing notification for this ID if one exists.
+        var key = notification_storage_key_prefix + item_data.id;
+        var existing_notification = get_object_array_from_storage(key);
+        if (existing_notification.hasOwnProperty("buy_sell")) {
+            $buy_sell_select.val(existing_notification.buy_sell);
+            $operator_select.val(existing_notification.operator);
+            var price_obj = split_price(existing_notification.price);
+            $ngold.val(price_obj.ngold);
+            $nsilver.val(price_obj.nsilver);
+            $ncopper.val(price_obj.ncopper);
+        } else {
+            $buy_sell_select.val("buy");
+            $operator_select.val(">");
+            $ngold.val("0");
+            $nsilver.val("0");
+            $ncopper.val("0");
+        }
+
+        $notification_close_button.click(function() {
+            $notification_div.remove();
+        });
+        $notification_delete_button.click(function () {
+            localStorage.removeItem(key);
+            $notification_div.remove();
+        });
+        $notification_save_button.click(function() {
+            var price = unsplit_price($ngold.val(), $nsilver.val(), $ncopper.val());
+            var notification = {
+                buy_sell: $buy_sell_select.val(),
+                operator: $operator_select.val(),
+                price: price
+            };
+            save_object_to_storage(key, notification);
+            $notification_div.remove();
+        });
+        $body.append($notification_div);
+
+        // Adjust the height so that the notification div appears below the item description
+        var original_offset = $notification_div.offset();
+        var li_height = $li.height();
+        var li_offset = $li.offset();
+        $notification_div.offset({top: li_offset.top + li_height, left: original_offset.left});
     }
 
     // Start polling the GW2 API to see when the price changes
     (function poll() {
-    setTimeout(function() {
-    $.ajax({
-    url: prices_url_root + "19684",
-    success: handle_price_data,
-    dataType: "json",
-    complete: poll
-    });
-    }, 30000)
-    })();*/
+        setTimeout(function() {
+            //retrieve keys from storage
+            for (var i=0; i<localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.indexOf(notification_storage_key_prefix) === 0) {
+                    var item_id = key.substr(notification_storage_key_prefix.length);
+
+                    function success(price_data) {
+                        price_data = price_data[0];
+                        var key = notification_storage_key_prefix + price_data.id;
+                        var notification_setting = get_object_array_from_storage(key);
+                        var price = price_data[notification_setting.buy_sell].unit_price;
+                        var show = false;
+                        if (notification_setting.operator === "gt") {
+                            show = price > notification_setting.price;
+                        } else if (notification_setting.operator === "lt") {
+                            show = price < notification_setting.price;
+                        }
+                        if (show) {
+                            console.log("would have shown a notification...")
+                        }
+                    }
+
+                    $.ajax({
+                        url: price_url_root + item_id,
+                        success: success,
+                        complete: poll
+                    });
+                }
+            }
+        }, 3000)
+    })();
 
     return $reveal_button;
 }
