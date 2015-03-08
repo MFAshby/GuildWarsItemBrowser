@@ -11,6 +11,7 @@
 }
 
 .item_list_text {
+    margin-top: 0;
 }
 
 .item_list_result:nth-child(even) {

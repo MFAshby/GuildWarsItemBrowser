@@ -6,10 +6,10 @@
 function item_list(callback_function, display_html_function) {
 
     display_html_function = typeof(display_html_function) !== 'undefined' ? display_html_function
-        : function(item_data) {
+        : function($li, item_data) {
         var $item_text = $('<p class="item_list_text"></p>');
         $item_text.text(item_data.name);
-        return $item_text;
+        $li.append($item_text);
     };
     console.log("item_list creation called");
 
@@ -24,11 +24,6 @@ function item_list(callback_function, display_html_function) {
     $item_list.callback_function = callback_function;
 
     // When an item is selected, call the callback function
-    $item_list.item_selected = function () {
-        console.log("item_selected called");
-        var item_id = $(this).attr("item_id");
-        callback_function(item_id);
-    };
 
     $item_list.add_item = function(item_data) {
         console.log("add_item called");
@@ -39,10 +34,15 @@ function item_list(callback_function, display_html_function) {
         var $img = $('<img class="item_list_image"/>');
 
         $li.attr("item_id", "" + item_id);
-        $li.click($item_list.item_selected);
+        $li.click(function () {
+            console.log("item_selected called");
+            var item_id = $li.attr("item_id");
+            callback_function($li, item_id);
+        });
+
         $img.attr("src", icon_url);
         $li.append($img);
-        $li.append(display_html_function(item_data));
+        display_html_function($li, item_data);
         $(this).append($li);
     };
 
