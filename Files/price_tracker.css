@@ -90,3 +90,11 @@
     background-color: #555555;
     border: 1px solid #777777;
 }
+
+#notification_panel {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 300px;
+    background-color: red;
+}
