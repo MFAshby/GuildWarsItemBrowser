@@ -3,8 +3,6 @@
  */
 
 function item_browser(browser_callback) {
-    // Useful URLs
-    var search_url_root = "http://localhost:8080?search=";
 
     // Set up components
     var $browser = $('<div id="browser" class="browser_element"></div>');
@@ -40,9 +38,8 @@ function item_browser(browser_callback) {
             }
 
             console.log("Calling search API");
-            var search_url = search_url_root + search_text;
             $results.append("Searching...");
-            $.get(search_url, function(item_ids_list) {
+            item_search(search_text, function(item_ids_list) {
                 console.log("Search API call finished");
                 $results.display_all_item_ids(item_ids_list);
             });
