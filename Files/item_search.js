@@ -1,7 +1,7 @@
 function item_search(query, callback) {
   // Open a connection to the database.
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', '/home/martin/workspace/GuildWarsItemBrowser/Files/items.db', true);
+  xhr.open('GET', './items.db', true);
   xhr.responseType = 'arraybuffer';
   xhr.onload = function(e) {
     var uInt8Array = new Uint8Array(this.response);
