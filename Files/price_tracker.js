@@ -319,6 +319,7 @@ function price_tracker() {
                     show = price < notification_setting.price;
                 }
                 if (show) {
+                    console.log("Going to notify");
                     show_notification(item_id, notification_setting);
                 }
             }
