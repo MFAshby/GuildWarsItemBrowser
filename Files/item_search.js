@@ -1,5 +1,5 @@
 function item_search(query, callback) {
-  // Open a connection to the database.
+
   var xhr = new XMLHttpRequest();
   xhr.open('GET', './items.db', true);
   xhr.responseType = 'arraybuffer';
@@ -14,14 +14,8 @@ function item_search(query, callback) {
         var item_id = stmt.get()[0];
         results.push(item_id);
     }
-
-    // free the memory used by the statement
     stmt.free();
-
-    console.log("Closing");
-
     db.close();
-
     callback(results);
   };
   xhr.send();
