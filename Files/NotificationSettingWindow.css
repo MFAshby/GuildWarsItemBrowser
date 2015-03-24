@@ -19,3 +19,12 @@
     background-color: #555555;
     border: 1px solid #777777;
 }
+
+
+#notification_settings_close_button {
+  clear: left;
+  color: #777777;
+  float: right;
+  width: 19px;
+  height: 19px;
+}

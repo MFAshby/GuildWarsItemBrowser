@@ -10,7 +10,7 @@ $(document).ready(function (){
   $add_button.click(add_button_clicked);
   $close_button.click(close_button_clicked);
 
-  item_tracker.register_storage_changes(rebuild_item_list);
+  item_tracker.register_tracked_item_changes(rebuild_item_list);
 
   // Construct the item list (it's special)
   var $item_list = item_list(list_callback, list_display_html_function);
@@ -30,12 +30,16 @@ $(document).ready(function (){
   }
 
   function list_callback($li, item_id) {
-    // Show/hide the buttons panel
+    // Show/hide the buttons panel for this list item
     var $buttons_list = $li.$buttons_list;
     if ($buttons_list.is(':visible')) {
       $buttons_list.detach();
     } else {
       $buttons_list.insertAfter($li);
+      // Hide the buttons for all the other list items
+      $li.siblings("li").each(function (ix, value) {
+        value.$buttons_list.detach();
+      });
     }
   }
 
@@ -62,10 +66,10 @@ $(document).ready(function (){
       $price_span.text('');
       $price_span.append($('<br/>'));
       $price_span.append('Buys for ');
-      $price_span.append(format_price(item_buys_cost));
+      $price_span.append(prices.format_price(item_buys_cost));
       $price_span.append($('<br/>'));
       $price_span.append('Sells for ');
-      $price_span.append(format_price(item_sells_cost));
+      $price_span.append(prices.format_price(item_sells_cost));
     });
     // Callbacks for the buttons. They should hide the list
     $remove_button.click(function () {
@@ -91,36 +95,6 @@ $(document).ready(function (){
     $item_list.display_all_item_ids(item_tracker.get_tracked_items());
   }
   rebuild_item_list();
-
-  // Drawing prices etc.
-  // Format prices using the coin icons
-  function format_price(price){
-    var price_obj = split_price(price);
-    var $price_description = $('<span></span>');
-    if (price_obj.ngold > 0) {
-      $price_description.append("" + price_obj.ngold);
-      $price_description.append($('<img src="Gold_coin.png"/>'));
-    }
-    if (price_obj.nsilver > 0) {
-      $price_description.append("" + price_obj.nsilver);
-      $price_description.append($('<img src="Silver_coin.png"/>'));
-    }
-    if (price_obj.ncopper > 0) {
-      $price_description.append("" + price_obj.ncopper);
-      $price_description.append($('<img src="Copper_coin.png"/>'));
-    }
-    if ($price_description.text() === "") {
-      $price_description.text('No cost!');
-    }
-    return $price_description;
-  }
-
-  function split_price(price) {
-    var ncopper = price % 100;
-    var nsilver = Math.round(price / 100) % 100;
-    var ngold = Math.round((price / 10000));
-    return {ngold:ngold, nsilver:nsilver, ncopper: ncopper};
-  }
 
   // Allow dragging this window to move it.
   $item_list_and_controls.mousedown(function () {

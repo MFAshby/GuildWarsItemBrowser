@@ -67,9 +67,17 @@ var item_tracker = {
     localStorage.removeItem("notification_item_id_" + item_id);
   },
 
-  register_storage_changes: function(cb_function) {
+  register_tracked_item_changes: function(cb_function) {
     $(window).bind('storage', function(e) {
-      cb_function();
+      if (e.originalEvent.key === "tracked_items")
+        cb_function();
+    });
+  },
+
+  register_modify_notification_changes: function(cb_function) {
+    $(window).bind('storage', function(e) {
+      if (e.originalEvent.key === "current_notification_setting_mod")
+        cb_function();
     });
   }
 };

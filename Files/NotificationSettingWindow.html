@@ -9,17 +9,22 @@
         <link href="ListWindow.css" type="text/css" rel="stylesheet"/>
         <link href="item_list.css" type="text/css" rel="stylesheet"/>
 
-        <script type='text/javascript' id='lt_ws' src='http://localhost:49549/socket.io/lighttable/ws.js'></script>
+        <script type='text/javascript' id='lt_ws' src='http://localhost:52451/socket.io/lighttable/ws.js'></script>
 
-        <script src="sql.js"></script>
-        <script src="item_search.js"></script>
         <script src="jquery-1.11.2.js"></script>
+
+        <!-- make this window draggable-->
+        <script src="draggable.js"></script>
+        <script src="prices.js"></script>
+        <script src="item_search.js"></script>
         <script src="item_list.js"></script>
         <script src="model.js"></script>
         <script src="NotificationSettingWindow.js"></script>
     </head>
     <body>
         <div class="notification_settings">
+            <button id="notification_settings_close_button" class="tracker_button">x</button>
+
             Notify me when the
             <select id="buy_sell_select" class="notification_select">
                 <option value="buys">buy</option>
@@ -38,9 +43,10 @@
             <img src="Silver_coin.png"/>
             <input id="ncopper" class="notification_number_entry" type="number" min="0">
             <img src="Copper_coin.png"/>
-            <button id="save" class="tracker_button">Save</button>
-            <button id="delete" class="tracker_button">Delete</button>
-            <button id="close" class="tracker_button">Close</button>
+            <div id="buttons">
+                <button id="save" class="tracker_button">Save</button>
+                <button id="delete" class="tracker_button">Delete</button>
+            </div>
         </div>
     </body>
 </html>

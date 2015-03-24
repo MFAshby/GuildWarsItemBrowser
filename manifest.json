@@ -37,7 +37,7 @@
       },
       "NotificationSettingWindow": {
         "file": "Files/NotificationSettingWindow.html",
-        "transparent": false,
+        "transparent": true,
         "resizable": false,
         "size": {"width": 350, "height": 500},
         "externally_connectable":  {

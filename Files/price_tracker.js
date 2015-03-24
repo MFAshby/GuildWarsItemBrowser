@@ -2,6 +2,8 @@
  * Created by Martin on 08/03/2015.
  */
 
+// TODO DELETE THIS FILE WHEN YOU'VE REFACTORED ALL THE CONTENTS.
+
 function price_tracker() {
     const tracked_items_key = "tracked_items";
     const notification_storage_key_prefix = "notification_item_id_";

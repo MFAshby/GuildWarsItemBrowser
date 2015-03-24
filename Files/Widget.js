@@ -9,12 +9,5 @@ $(document).ready(function () {
         console.log(result);
       });
     });
-  });
-
-  $reveal_button.mousedown(function () {
-    overwolf.windows.getCurrentWindow(function(result) {
-      console.log("mousedown called");
-      overwolf.windows.dragMove(result.window.id);
-    });
-  });
+  })
 });
