@@ -3,26 +3,28 @@
  */
 
 $(document).ready(function() {
+  // TODO move these into some central location.
+  const item_url_root = "https://api.guildwars2.com/v2/items/?ids=";
+  const price_url_root = "https://api.guildwars2.com/v2/commerce/prices?ids=";
 
   // References to components we need
   var $browser = $('#browser');
   var $close = $('#browser_close');
   var $search = $('#browser_search');
+  var $results = $('#browser_results');
 
   // Focus the search to start with
   $search.focus();
 
   overwolf.windows.getCurrentWindow(function (result) {
 
-    var $results = item_list(item_selected);
-    $browser.append($results);
-
     // Register events
     $search.keyup(search_keyup);
     $close.click(browser_close_clicked);
 
     // Handlers
-    function item_selected($li, item_id) {
+    function item_selected(item_id) {
+      console.log("Adding item id " + item_id);
       item_tracker.add_tracked_item(item_id);
     }
 
@@ -37,26 +39,32 @@ $(document).ready(function() {
       clearTimeout(timer);
       var search_text = $search.val();
       timer = setTimeout(function() {
+        $results.empty();
+
         if (search_text === "") {
-          console.log("Empty search, clearing");
-          $results.empty();
           return;
         }
 
-        console.log("Calling search API");
         $results.append("Searching...");
-        item_search(search_text, function(item_ids_list) {
-          console.log("Search API call finished");
-          $results.display_all_item_ids(item_ids_list);
+        item_search(search_text, function(item_ids) {
+          $results.empty();
+          if (item_ids.length > 0) {
+            var items_string = item_ids.join(",");
+            $.get(item_url_root + items_string, function(items_data) {
+              console.log(items_data[0]);
+              $results.loadTemplate("SearchWindowItemTemplate.html", items_data, {
+                complete: function() {
+                  // Add callbacks for the list items
+                  $('.item_list_result').click(function () {
+                    var item_id = $(this).attr('id');
+                    item_selected(item_id);
+                  });
+                }
+              });
+            });
+          }
         });
       }, 200);
-    }
-  });
-
-  // Allow dragging this window to move it.
-  $browser.mousedown(function () {
-    overwolf.windows.getCurrentWindow(function(result) {
-      overwolf.windows.dragMove(result.window.id);
-    });
+    };
   });
 });

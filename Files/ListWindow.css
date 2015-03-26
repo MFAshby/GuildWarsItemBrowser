@@ -1,6 +1,4 @@
-#tracked_items_list {
-    width: 100pw;
-    height: 100ph;
+body {
     background-color: #555555;
 }
 
@@ -42,4 +40,14 @@
 .item_change_list_item {
     display: inline;
     list-style: none;
+}
+
+.item_remove_button {
+  float: right;
+  clear: right;
+}
+
+.item_notify_button {
+  float: right;
+  clear: right;
 }

@@ -1,22 +1,20 @@
 $(document).ready(function (){
+  const item_url_root = "https://api.guildwars2.com/v2/items/?ids=";
   const price_url_root = "https://api.guildwars2.com/v2/commerce/prices?ids=";
 
   // Reference items in the HTML document
-  var $item_list_and_controls = $('#tracked_items_list');
   var $add_button = $('#tracker_add_button');
   var $close_button = $('#tracker_close_button');
+  var $item_list = $('#tracked_items_list');
 
-  // Register handlers
+  // Register action handlers
   $add_button.click(add_button_clicked);
   $close_button.click(close_button_clicked);
 
+  // Register data change handler
   item_tracker.register_tracked_item_changes(rebuild_item_list);
 
-  // Construct the item list (it's special)
-  var $item_list = item_list(list_callback, list_display_html_function);
-  $item_list_and_controls.append($item_list);
-
-  // Handlers
+  // Handler functions
   function add_button_clicked() {
     overwolf.windows.obtainDeclaredWindow("SearchWindow", function(result) {
       overwolf.windows.restore(result.window.id, function(result){});
@@ -29,78 +27,68 @@ $(document).ready(function (){
     });
   }
 
-  function list_callback($li, item_id) {
-    // Show/hide the buttons panel for this list item
-    var $buttons_list = $li.$buttons_list;
-    if ($buttons_list.is(':visible')) {
-      $buttons_list.detach();
-    } else {
-      $buttons_list.insertAfter($li);
-      // Hide the buttons for all the other list items
-      $li.siblings("li").each(function (ix, value) {
-        value.$buttons_list.detach();
+  function rebuild_item_list(){
+    var tracked_item_ids = item_tracker.get_tracked_items();
+
+    // Clear down the existing list
+    $item_list.empty();
+
+    // Start loading indicator
+    if (tracked_item_ids.length > 0) {
+      $item_list.append($('<span>Loading...</span>'));
+      var items_string = tracked_item_ids.join(",");
+
+      // Get the item details from the GW2 API
+      $.get(item_url_root + items_string, function(items_data) {
+
+        // Get the price details from the GW2 API
+        $.get(price_url_root + items_string, function(prices_data) {
+
+          // Append the data together
+          items_data.forEach(function (item_data) {
+            var item_id = item_data.id;
+            prices_data.forEach(function (price_data) {
+              if (item_id === price_data.id) {
+                item_data.buys_price = price_data.buys.unit_price;
+                item_data.sells_price = price_data.sells.unit_price;
+              }
+            });
+          });
+
+          // Add the formatter for prices
+          $.addTemplateFormatter("priceFormatter",  function(value, template) {
+            return prices.format_price(value);
+          });
+
+          // Display the details using a template
+          $item_list.empty();
+          $item_list.loadTemplate("ListWindowItemTemplate.html", items_data, {
+            // Set handlers for all the list items we just created
+            complete: function() {
+              $remove_button = $('.item_remove_button');
+              $notify_button = $('.item_notify_button');
+              $list_item = $('.item_list_result');
+
+              $remove_button.click(function () {
+                var item_id = $(this).attr('id');
+                // Remove from local storage
+                item_tracker.remove_tracked_item(item_id);
+
+                // Animate the list item away
+                $list_item.hide(100);
+              });
+
+              $notify_button.click(function () {
+                var item_id = $(this).attr('id');
+                notify_item(item_id);
+              });
+            }
+          });
+        });
       });
     }
   }
 
-  function list_display_html_function($li, item_data) {
-    var name = item_data.name;
-    var item_id = item_data.id;
-
-    var $display_html = $('<p class="item_list_text"></p>');
-    var $name_span = $('<span></span>');
-    var $price_span = $('<span><br/>Loading price...</span>');
-    var $buttons_list = $('<li><ul></ul></li>');
-    var $remove_button = $('<li class="item_change_list_item"><button class="item_change_button">remove</button></li>');
-    var $set_price_button = $('<li class="item_change_list_item"><button class="item_change_button">notify</button></li>');
-
-    $name_span.text(name);
-    $buttons_list.append($remove_button);
-    $buttons_list.append($set_price_button);
-    $display_html.append($name_span);
-    $display_html.append($price_span);
-
-    $.get(price_url_root + item_id, function(price_data) {
-      var item_sells_cost = price_data[0].sells.unit_price;
-      var item_buys_cost = price_data[0].buys.unit_price;
-      $price_span.text('');
-      $price_span.append($('<br/>'));
-      $price_span.append('Buys for ');
-      $price_span.append(prices.format_price(item_buys_cost));
-      $price_span.append($('<br/>'));
-      $price_span.append('Sells for ');
-      $price_span.append(prices.format_price(item_sells_cost));
-    });
-    // Callbacks for the buttons. They should hide the list
-    $remove_button.click(function () {
-      console.log("REmove button");
-      item_tracker.remove_tracked_item(item_id);
-      rebuild_item_list();
-    });
-    $set_price_button.click(function () {
-      // Set this as the notification to be modified
-      item_tracker.set_modify_notification(item_id);
-      // Now pop up the notification settings window.
-      overwolf.windows.obtainDeclaredWindow("NotificationSettingWindow", function(result) {
-        overwolf.windows.restore(result.window.id, function(result){});
-      });
-    });
-
-    // Keep a reference to this so we can manipulate it later
-    $li.$buttons_list = $buttons_list;
-    $li.append($display_html);
-  }
-
-  function rebuild_item_list(){
-    $item_list.display_all_item_ids(item_tracker.get_tracked_items());
-  }
+  // Call this on page load
   rebuild_item_list();
-
-  // Allow dragging this window to move it.
-  $item_list_and_controls.mousedown(function () {
-    overwolf.windows.getCurrentWindow(function(result) {
-      overwolf.windows.dragMove(result.window.id);
-    });
-  });
-
 });
