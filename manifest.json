@@ -46,17 +46,6 @@
           ]
         }
       },
-      "NotificationWindow": {
-        "file": "Files/NotificationWindow.html",
-        "transparent": true,
-        "resizable": true,
-        "size": {"width": 350, "height": 500},
-        "externally_connectable":  {
-          "matches": [
-            "https://api.guildwars2.com*"
-          ]
-        }
-      },
       "SearchWindow": {
         "file": "Files/SearchWindow.html",
         "transparent": true,
