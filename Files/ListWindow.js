@@ -27,6 +27,13 @@ $(document).ready(function (){
     });
   }
 
+  function notify_item(item_id) {
+    item_tracker.set_modify_notification(item_id);
+    overwolf.windows.obtainDeclaredWindow("NotificationSettingWindow", function(result) {
+      overwolf.windows.restore(result.window.id, function(result){});
+    });
+  }
+
   function rebuild_item_list(){
     var tracked_item_ids = item_tracker.get_tracked_items();
 
