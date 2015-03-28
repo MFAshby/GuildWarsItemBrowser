@@ -20,15 +20,15 @@ var prices = {
     var $price_description = $('<span></span>');
     if (price_obj.ngold > 0) {
       $price_description.append("" + price_obj.ngold);
-      $price_description.append($('<img src="Gold_coin.png"/>'));
+      $price_description.append($('<img src="images/Gold_coin.png"/>'));
     }
     if (price_obj.nsilver > 0) {
       $price_description.append("" + price_obj.nsilver);
-      $price_description.append($('<img src="Silver_coin.png"/>'));
+      $price_description.append($('<img src="images/Silver_coin.png"/>'));
     }
     if (price_obj.ncopper > 0) {
       $price_description.append("" + price_obj.ncopper);
-      $price_description.append($('<img src="Copper_coin.png"/>'));
+      $price_description.append($('<img src="images/Copper_coin.png"/>'));
     }
     if ($price_description.text() === "") {
       $price_description.text('No cost!');

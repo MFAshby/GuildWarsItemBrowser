@@ -38,7 +38,7 @@
       "NotificationSettingWindow": {
         "file": "Files/NotificationSettingWindow.html",
         "transparent": true,
-        "resizable": false,
+        "resizable": true,
         "size": {"width": 350, "height": 500},
         "externally_connectable":  {
           "matches": [
@@ -48,8 +48,8 @@
       },
       "NotificationWindow": {
         "file": "Files/NotificationWindow.html",
-        "transparent": false,
-        "resizable": false,
+        "transparent": true,
+        "resizable": true,
         "size": {"width": 350, "height": 500},
         "externally_connectable":  {
           "matches": [
@@ -60,7 +60,7 @@
       "SearchWindow": {
         "file": "Files/SearchWindow.html",
         "transparent": true,
-        "resizable": false,
+        "resizable": true,
         "size": {"width": 300, "height": 500},
         "externally_connectable":  {
           "matches": [
