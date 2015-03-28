@@ -5,4 +5,5 @@ $(document).ready(function () {
       overwolf.windows.dragMove(result.window.id);
     });
   });
+  console.log("MADE A FUKKEN CHANGE");
 });
