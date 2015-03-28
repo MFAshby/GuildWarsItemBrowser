@@ -24,4 +24,4 @@ To make changes:
 <li>Your recently pushed branches > compare & Pull request > Create pull request</li>
 <li>Merge pull request, delete old branch when you're done!</li>
 <li>Rinse and repeat.</li>
-</ol?
+</ol>
