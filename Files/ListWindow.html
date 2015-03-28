@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Tracked Items List
+        </title>
+        <!-- styles -->
+        <link href="Main.css" type="text/css" rel="stylesheet"/>
+        <link href="ListWindow.css" type="text/css" rel="stylesheet"/>
+        <link href="item_list.css" type="text/css" rel="stylesheet"/>
+
+        <!-- tools -->
+        <script type='text/javascript' id='lt_ws' src='http://localhost:50294/socket.io/lighttable/ws.js'></script>
+
+        <!-- external libs -->
+        <script src="jquery-1.11.2.js"></script>
+        <script src="jquery.loadTemplate-1.4.4.js"></script>
+
+        <!-- internal libs -->
+        <script src="model.js"></script>
+        <script src="prices.js"></script>
+        <script src="draggable.js"></script>
+
+        <!-- main script -->
+        <script src="ListWindow.js"></script>
+    </head>
+    <body>
+        <button id="tracker_add_button" class="tracker_button">add</button>
+        <button id="tracker_close_button" class="tracker_button">x</button>
+        <div id="tracked_items_list"></div>
+    </body>
+</html>

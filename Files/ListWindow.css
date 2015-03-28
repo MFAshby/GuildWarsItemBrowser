@@ -1,0 +1,53 @@
+body {
+    background-color: #555555;
+}
+
+#tracker_close_button {
+  color: #777777;
+  float: right;
+  width: 19px;
+  height: 19px;
+}
+
+.tracker_button {
+    display: inline-block;
+    background-color: #555555;
+    color: white;
+    border: 1px solid #777777;
+    margin: 5px;
+}
+
+.tracker_button:hover {
+    background-color: #666666;
+}
+
+.item_buttons_div {
+    float: right;
+}
+
+.item_change_button {
+    background-color: #555555;
+    color: white;
+    border: 1px solid #777777;
+    height: 19px;
+    margin: 5px;
+}
+
+.item_change_button:hover {
+    background-color: #666666;
+}
+
+.item_change_list_item {
+    display: inline;
+    list-style: none;
+}
+
+.item_remove_button {
+  float: right;
+  clear: right;
+}
+
+.item_notify_button {
+  float: right;
+  clear: right;
+}

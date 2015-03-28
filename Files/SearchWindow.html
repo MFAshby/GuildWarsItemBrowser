@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Items Search
+        </title>
+        <!-- styles -->
+        <link href="Main.css" type="text/css" rel="stylesheet"/>
+        <link href="SearchWindow.css" type="text/css" rel="stylesheet"/>
+        <link href="item_list.css" type="text/css" rel="stylesheet"/>
+
+        <!-- tools -->
+        <script type='text/javascript' id='lt_ws' src='http://localhost:49259/socket.io/lighttable/ws.js'></script>
+
+        <!-- libraries -->
+
+        <script src="jquery-1.11.2.js"></script>
+        <script src="jquery.loadTemplate-1.4.4.js"></script>
+
+        <!-- my libs -->
+        <script src="sql.js"></script>
+        <script src="item_search.js"></script>
+        <script src="model.js"></script>
+        <script src="draggable.js"></script>
+
+        <!-- main script -->
+        <script src="SearchWindow.js"></script>
+    </head>
+    <body>
+        <input id="browser_search" class="browser_element" type="text" size="30" placeholder="Search for items" autocomplete="off">
+        <div id="browser_close" class="browser_element">x</div>
+        <div id="browser_results"></div>
+    </body>
+</html>

@@ -11,19 +11,60 @@
     "description": "Get notified when your items reach the right price!"
   },
   "data": {
-    "start_window": "MainWindow",
+    "start_window": "WidgetWindow",
     "windows": {
-      "MainWindow": {
-        "file": "Files/index.html",
+      "WidgetWindow": {
+        "file": "Files/WidgetWindow.html",
         "transparent": true,
         "resizable": false,
-        "size": {"width": 450, "height": 450},
-        "min_size": {"width": 450, "height": 450},
-        "max_size": {"width": 600, "height": 500},
+        "size": {"width": 200, "height": 100},
         "externally_connectable":  {
           "matches": [
-            "https://api.guildwars2.com*",
-            "http://localhost:8080*"
+            "https://api.guildwars2.com*"
+          ]
+        }
+      },
+      "ListWindow": {
+        "file": "Files/ListWindow.html",
+        "transparent": true,
+        "resizable": true,
+        "size": {"width": 350, "height": 500},
+        "externally_connectable":  {
+          "matches": [
+            "https://api.guildwars2.com*"
+          ]
+        }
+      },
+      "NotificationSettingWindow": {
+        "file": "Files/NotificationSettingWindow.html",
+        "transparent": true,
+        "resizable": true,
+        "size": {"width": 350, "height": 500},
+        "externally_connectable":  {
+          "matches": [
+            "https://api.guildwars2.com*"
+          ]
+        }
+      },
+      "NotificationWindow": {
+        "file": "Files/NotificationWindow.html",
+        "transparent": true,
+        "resizable": true,
+        "size": {"width": 350, "height": 500},
+        "externally_connectable":  {
+          "matches": [
+            "https://api.guildwars2.com*"
+          ]
+        }
+      },
+      "SearchWindow": {
+        "file": "Files/SearchWindow.html",
+        "transparent": true,
+        "resizable": true,
+        "size": {"width": 300, "height": 500},
+        "externally_connectable":  {
+          "matches": [
+            "https://api.guildwars2.com*"
           ]
         }
       }
