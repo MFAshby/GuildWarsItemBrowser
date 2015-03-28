@@ -1,13 +1,9 @@
 #reveal_tracked_items {
     background-color: #555555;
-    width: 100px;
+    width: 80px;
     height: 50px;
     border-radius: 8px;
     vertical-align: middle;
     text-align: center;
     padding-top:15px;
-}
-
-#reveal_tracked_items:hover {
-    background-color: #666666;
 }
