@@ -73,9 +73,7 @@ $(document).ready(function (){
                 var item_id = $(this).attr('id');
                 // Remove from local storage
                 item_tracker.remove_tracked_item(item_id);
-
-                // Animate the list item away
-                $list_item.hide(100);
+                rebuild_item_list();
               });
 
               $notify_button.click(function () {
