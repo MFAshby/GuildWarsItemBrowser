@@ -22,13 +22,13 @@ $(document).ready(function (){
     overwolf.windows.obtainDeclaredWindow("SearchWindow", function(result) {
       overwolf.windows.restore(result.window.id, function(result){});
     });
-  }
+  };
 
   function close_button_clicked() {
     overwolf.windows.getCurrentWindow(function (result) {
       overwolf.windows.close(result.window.id);
     });
-  }
+  };
 
   function transparency_button_clicked() {
     existing_background = body_background();
@@ -44,7 +44,7 @@ $(document).ready(function (){
     overwolf.windows.obtainDeclaredWindow("NotificationSettingWindow", function(result) {
       overwolf.windows.restore(result.window.id, function(result){});
     });
-  }
+  };
 
   function rebuild_item_list(){
     console.log("rebuild_item_list");
@@ -105,8 +105,8 @@ $(document).ready(function (){
           });
         });
       });
-    }
-  }
+    };
+  };
 
   // Call this on page load
   rebuild_item_list();
