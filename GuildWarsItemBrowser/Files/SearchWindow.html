@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Items Search
+        </title>
+        <!-- styles -->
+		<link rel="stylesheet" type="text/css" href="https://d1h9a8s8eodvjz.cloudfront.net/fonts/menomonia/08-02-12/menomonia.css">
+        <link href="Style.css" type="text/css" rel="stylesheet"/>
+
+        <!-- libraries -->
+
+        <script src="jquery-1.11.2.js"></script>
+        <script src="jquery.loadTemplate-1.4.5.min.js"></script>
+
+        <!-- my libs -->
+        <script src="sql.js"></script>
+        <script src="item_search.js"></script>
+        <script src="model.js"></script>
+        <script src="draggable.js"></script>
+
+        <!-- main script -->
+        <script src="SearchWindow.js"></script>
+    </head>
+    <body>
+        <input id="browser_search" class="browser_element" type="text" size="30" placeholder="Search for items" autocomplete="off">
+        <div id="browser_close" class="browser_element">x</div>
+        <div id="browser_results"></div>
+    </body>
+</html>
