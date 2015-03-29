@@ -5,7 +5,7 @@ var prices = {
   split_price: function (price) {
     var ncopper = price % 100;
     var nsilver = Math.floor(price / 100) % 100;
-    var ngold = Math.floor(price / 10000));
+    var ngold = Math.floor(price / 10000);
     return {ngold:ngold, nsilver:nsilver, ncopper: ncopper};
   },
 
