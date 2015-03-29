@@ -5,11 +5,14 @@ $(document).ready(function (){
   // Reference items in the HTML document
   var $add_button = $('#tracker_add_button');
   var $close_button = $('#tracker_close_button');
+  var $transparency_button = $('#tracker_transparency_button');
   var $item_list = $('#tracked_items_list');
+  var default_background_color = body_background()
 
   // Register action handlers
   $add_button.click(add_button_clicked);
   $close_button.click(close_button_clicked);
+  $transparency_button.click(transparency_button_clicked);
 
   // Register data change handler
   item_tracker.reg_changes(item_tracker.tracked_items_key, rebuild_item_list);
@@ -26,6 +29,15 @@ $(document).ready(function (){
       overwolf.windows.close(result.window.id);
     });
   }
+
+  function transparency_button_clicked() {
+    existing_background = body_background();
+    document.body.style.backgroundColor = existing_background === 'transparent' ? default_background_color : 'transparent';
+  };
+
+  function body_background() {
+    return document.body.style.backgroundColor;
+  };
 
   function notify_item(item_id) {
     item_tracker.set_modify_notification(item_id);
