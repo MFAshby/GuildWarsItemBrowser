@@ -3,6 +3,10 @@
 // provided by the overwolf API. Lame.
 var item_tracker = {
 
+  item_url_root: "https://api.guildwars2.com/v2/items/?ids=",
+
+  price_url_root: "https://api.guildwars2.com/v2/commerce/prices?ids=",
+
   get_tracked_items: function() {
     var json_string = localStorage["tracked_items"];
     return JSON.parse(json_string);

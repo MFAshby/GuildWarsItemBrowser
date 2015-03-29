@@ -46,10 +46,10 @@ $(document).ready(function (){
       var items_string = tracked_item_ids.join(",");
 
       // Get the item details from the GW2 API
-      $.get(item_url_root + items_string, function(items_data) {
+      $.get(item_tracker.item_url_root + items_string, function(items_data) {
 
         // Get the price details from the GW2 API
-        $.get(price_url_root + items_string, function(prices_data) {
+        $.get(item_tracker.price_url_root + items_string, function(prices_data) {
 
           // Append the data together
           items_data.forEach(function (item_data) {

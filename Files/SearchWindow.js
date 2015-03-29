@@ -3,9 +3,6 @@
  */
 
 $(document).ready(function() {
-  // TODO move these into some central location.
-  const item_url_root = "https://api.guildwars2.com/v2/items/?ids=";
-  const price_url_root = "https://api.guildwars2.com/v2/commerce/prices?ids=";
 
   // References to components we need
   var $browser = $('#browser');
@@ -50,7 +47,7 @@ $(document).ready(function() {
           $results.empty();
           if (item_ids.length > 0) {
             var items_string = item_ids.join(",");
-            $.get(item_url_root + items_string, function(items_data) {
+            $.get(item_tracker.item_url_root + items_string, function(items_data) {
               console.log(items_data[0]);
               $results.loadTemplate("SearchWindowItemTemplate.html", items_data, {
                 complete: function() {
