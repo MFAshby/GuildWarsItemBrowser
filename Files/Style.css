@@ -170,39 +170,40 @@ img.item_list_image {
     height: 64px;
     background-color: black;
     margin: 2px;
+	border: 1px solid #999999;
 }
 
 /* Classes for rarities. Note the names match exactly those specified by the API https://wiki.guildwars2.com/wiki/API:2/items */
 .Junk {
-  border: solid 2px black;
+  color:	#000000;
 }
 
 .Basic {
-  border: solid 2px #ffffff;
+  color:	#ffffff;  
 }
 
 .Fine {
-  border: solid 2px #5e94dc;
+  color:	#5e94dc;
 }
 
 .Masterwork {
-  border: solid 2px #3fb628;
+  color:	#3fb628;
 }
 
 .Rare {
-  border: solid 2px	#f1dc2b;
+  color:	#f1dc2b;
 }
 
 .Exotic {
-  border: solid 2px	#d8a13a
+  color:	#d8a13a
 }
 
 .Ascended {
-  border: solid 2px #d55a86;
+  color: 	#d55a86;
 }
 
 .Legendary {
-  border: solid 2px #8e39d5;
+  color:	#8e39d5;
 }
 
 #tracker_close_button {
