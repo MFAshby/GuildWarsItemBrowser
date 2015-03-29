@@ -22,7 +22,7 @@ $(document).ready(function() {
   $notification_save_button.click(save_notification);
 
   // Register for storage changes
-  item_tracker.register_modify_notification_changes(populate);
+  item_tracker.reg_changes(item_tracker.amending_notification_key, populate);
 
   // Pre-populate
   populate();
@@ -30,8 +30,8 @@ $(document).ready(function() {
   // Pre-populate with existing notification for this ID if one exists.
   function populate() {
     item_id = item_tracker.get_modify_notification();
-    var existing_notification = item_tracker.get_notification(item_id);
-    if (existing_notification.hasOwnProperty("buy_sell")) {
+    var existing_notification = item_tracker.get_tracked_item(item_id)["notification_setting"];
+    if (typeof(existing_notification) !== 'undefined') {
       $buy_sell_select.val(existing_notification.buy_sell);
       $operator_select.val(existing_notification.operator);
       var price_obj = prices.split_price(existing_notification.price);
@@ -59,18 +59,19 @@ $(document).ready(function() {
   }
 
   function delete_notification() {
-    item_tracker.delete_notification(item_id);
+    // Add, but with no notification.
+    item_tracker.add_tracked_item(item_id);
     close();
   }
 
   function save_notification() {
     var price = prices.unsplit_price($ngold.val(), $nsilver.val(), $ncopper.val());
-    var notification = {
+    var notification_setting = {
       buy_sell: $buy_sell_select.val(),
       operator: $operator_select.val(),
       price: price
     };
-    item_tracker.set_notification(item_id, notification);
+    item_tracker.add_tracked_item(item_id, notification_setting);
     close();
   }
 });

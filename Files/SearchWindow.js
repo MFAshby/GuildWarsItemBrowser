@@ -21,7 +21,6 @@ $(document).ready(function() {
 
     // Handlers
     function item_selected(item_id) {
-      console.log("Adding item id " + item_id);
       item_tracker.add_tracked_item(item_id);
     }
 
@@ -48,7 +47,6 @@ $(document).ready(function() {
           if (item_ids.length > 0) {
             var items_string = item_ids.join(",");
             $.get(item_tracker.item_url_root + items_string, function(items_data) {
-              console.log(items_data[0]);
               $results.loadTemplate("SearchWindowItemTemplate.html", items_data, {
                 complete: function() {
                   // Add callbacks for the list items

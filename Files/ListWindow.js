@@ -12,7 +12,7 @@ $(document).ready(function (){
   $close_button.click(close_button_clicked);
 
   // Register data change handler
-  item_tracker.register_tracked_item_changes(rebuild_item_list);
+  item_tracker.reg_changes(item_tracker.tracked_items_key, rebuild_item_list);
 
   // Handler functions
   function add_button_clicked() {
@@ -35,7 +35,9 @@ $(document).ready(function (){
   }
 
   function rebuild_item_list(){
-    var tracked_item_ids = item_tracker.get_tracked_items();
+    console.log("rebuild_item_list");
+    var tracked_items = item_tracker.get_tracked_items();
+    var tracked_item_ids = Object.keys(tracked_items);
 
     // Clear down the existing list
     $item_list.empty();

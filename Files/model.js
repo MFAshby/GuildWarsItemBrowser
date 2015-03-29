@@ -1,86 +1,66 @@
-// Provides all the behind-the-scenes data for my lovely windows to show.
 // Everything has to use local storage, as inter-window communication is NOT
 // provided by the overwolf API. Lame.
 var item_tracker = {
 
+  //API URLs.
   item_url_root: "https://api.guildwars2.com/v2/items/?ids=",
 
   price_url_root: "https://api.guildwars2.com/v2/commerce/prices?ids=",
 
+  //Top level keys for local storage.
+  tracked_items_key: "tracked_items_key",
+
+  amending_notification_key: "amending_notification_key",
+
+  // Functions for dealing with what items are in the tracker
   get_tracked_items: function() {
-    var json_string = localStorage["tracked_items"];
-    return JSON.parse(json_string);
-  },
-
-  add_tracked_item: function(item_id) {
-    var json_string = localStorage["tracked_items"];
-
-    var tracked_items = [];
+    var json_string = localStorage[this.tracked_items_key];
+    var tracked_items = {};
+    // Keys may not exist in local storage the first time the app starts
     if (typeof(json_string) !== 'undefined') {
        tracked_items = JSON.parse(json_string);
     }
+    return tracked_items;
+  },
 
-    if ($.inArray(item_id, tracked_items) === -1) {
-      console.log(item_id);
-      console.log(tracked_items);
-      tracked_items.push(item_id);
-      localStorage["tracked_items"] = JSON.stringify(tracked_items);
-    }
+  get_tracked_item: function(item_id) {
+    var all_items = this.get_tracked_items();
+    return all_items[item_id];
+  },
+
+  add_tracked_item: function(item_id, notification_setting) {
+    var tracked_items = this.get_tracked_items();
+
+    // Add key for this item_id
+    tracked_items[item_id] = {};
+
+    // Add the notification setting (if one was provided) as a property of that item ID.
+    tracked_items[item_id].notification_setting = notification_setting;
+
+    // Mash it all back to local storage.
+    localStorage[this.tracked_items_key] = JSON.stringify(tracked_items);
   },
 
   remove_tracked_item: function(item_id) {
-    var json_string = localStorage["tracked_items"];
-    var tracked_items = JSON.parse(json_string);
-
-    var ix = $.inArray("" + item_id, tracked_items);
-    console.log(tracked_items);
-    console.log(item_id);
-    console.log(ix);
-    if (ix > -1) {
-      tracked_items.splice(ix, 1);
-      localStorage["tracked_items"] = JSON.stringify(tracked_items);
-    }
+    var tracked_items = this.get_tracked_items();
+    delete tracked_items[item_id];
+    localStorage[this.tracked_items_key] = JSON.stringify(tracked_items);
   },
 
-  // The item_id for which notifications are currently being modified
+  // Functions for dealing with which item we're amending the notification settings for
   set_modify_notification: function(item_id) {
-    localStorage["current_notification_setting_mod"] = item_id;
+    localStorage[this.amending_notification_key] = item_id;
   },
+
   get_modify_notification: function() {
-    return localStorage["current_notification_setting_mod"];
+    return localStorage[this.amending_notification_key];
   },
 
-  get_all_notifications: function() {
-
-  },
-
-  get_notification: function(item_id) {
-    var json_string = localStorage["notification_item_id_" + item_id];
-    var notification_setting = {};
-    if (json_string !== 'undefined') {
-      notification_setting = JSON.parse(json_string);
-    }
-    return notification_setting;
-  },
-
-  set_notification: function(item_id, notification_setting) {
-    localStorage["notification_item_id_" + item_id] = JSON.stringify(notification_setting);
-  },
-
-  delete_notification: function(item_id) {
-    localStorage.removeItem("notification_item_id_" + item_id);
-  },
-
-  register_tracked_item_changes: function(cb_function) {
+  reg_changes: function(key, cb_function) {
     $(window).bind('storage', function(e) {
-      if (e.originalEvent.key === "tracked_items")
-        cb_function();
-    });
-  },
-
-  register_modify_notification_changes: function(cb_function) {
-    $(window).bind('storage', function(e) {
-      if (e.originalEvent.key === "current_notification_setting_mod")
+      console.log("storage change " + e.originalEvent.key);
+      if (e.originalEvent.key === key)
+        console.log("notifying");
         cb_function();
     });
   }
