@@ -1,6 +1,6 @@
 #reveal_tracked_items {
     background-color: #c8bfae;
-    width: 80px;
+    width: calc(100% - 30px);
     border-radius: 8px;
     text-align: center;
     padding:15px;
