@@ -27,6 +27,13 @@ $(document).ready(function (){
     });
   }
 
+  function notify_item(item_id) {
+    item_tracker.set_modify_notification(item_id);
+    overwolf.windows.obtainDeclaredWindow("NotificationSettingWindow", function(result) {
+      overwolf.windows.restore(result.window.id, function(result){});
+    });
+  }
+
   function rebuild_item_list(){
     var tracked_item_ids = item_tracker.get_tracked_items();
 
@@ -73,9 +80,7 @@ $(document).ready(function (){
                 var item_id = $(this).attr('id');
                 // Remove from local storage
                 item_tracker.remove_tracked_item(item_id);
-
-                // Animate the list item away
-                $list_item.hide(100);
+                rebuild_item_list();
               });
 
               $notify_button.click(function () {

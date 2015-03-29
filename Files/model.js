@@ -53,7 +53,7 @@ var item_tracker = {
   get_notification: function(item_id) {
     var json_string = localStorage["notification_item_id_" + item_id];
     var notification_setting = {};
-    if (typeof(json_string) !== 'undefined') {
+    if (json_string !== 'undefined') {
       notification_setting = JSON.parse(json_string);
     }
     return notification_setting;
