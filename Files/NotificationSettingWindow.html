@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Items Search
+        </title>
+        <!-- styles -->
+        <link href="Style.css" type="text/css" rel="stylesheet"/>
+
+        <!-- tools -->
+        <script type='text/javascript' id='lt_ws' src='http://localhost:51558/socket.io/lighttable/ws.js'></script>
+
+        <!-- libs -->
+        <script src="jquery-1.11.2.js"></script>
+
+        <!-- my libs -->
+        <script src="item_search.js"></script>
+        <script src="model.js"></script>
+        <script src="prices.js"></script>
+        <script src="draggable.js"></script>
+
+        <!-- main script -->
+        <script src="NotificationSettingWindow.js"></script>
+    </head>
+    <body>
+        <div class="notification_settings">
+            <button id="notification_settings_close_button" class="tracker_button">x</button>
+
+            Notify me when the
+            <select id="buy_sell_select" class="notification_select">
+                <option value="buys">buy</option>
+                <option value="sells">sell</option>
+            </select>
+            price of
+            <span id="notification_item_name">ITEM NAME</span>
+            is
+            <select id="operator_select" class="notification_select">'
+                <option value="gt">greater than</option>
+                <option value="lt">less than</option>
+            </select>
+            <input id="ngold" class="notification_number_entry" type="number" min="0">
+            <img src="images/Gold_coin.png"/>
+            <input id="nsilver" class="notification_number_entry" type="number" min="0">
+            <img src="images/Silver_coin.png"/>
+            <input id="ncopper" class="notification_number_entry" type="number" min="0">
+            <img src="images/Copper_coin.png"/>
+            <div id="buttons">
+                <button id="save" class="tracker_button">Save</button>
+                <button id="delete" class="tracker_button">Delete</button>
+            </div>
+        </div>
+    </body>
+</html>
