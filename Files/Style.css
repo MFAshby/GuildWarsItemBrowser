@@ -7,8 +7,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
 	margin: 0;
@@ -17,7 +17,7 @@ time, mark, audio, video {
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
@@ -169,10 +169,41 @@ img.item_list_image {
     width: 64px;
     height: 64px;
     background-color: black;
-    border: solid 1px black;
     margin: 2px;
 }
 
+/* Classes for rarities. Note the names match exactly those specified by the API https://wiki.guildwars2.com/wiki/API:2/items */
+.Junk {
+  border: solid 2px black;
+}
+
+.Basic {
+  border: solid 2px #ffffff;
+}
+
+.Fine {
+  border: solid 2px #5e94dc;
+}
+
+.Masterwork {
+  border: solid 2px #3fb628;
+}
+
+.Rare {
+  border: solid 2px	#f1dc2b;
+}
+
+.Exotic {
+  border: solid 2px	#d8a13a
+}
+
+.Ascended {
+  border: solid 2px #d55a86;
+}
+
+.Legendary {
+  border: solid 2px #8e39d5;
+}
 
 #tracker_close_button {
   color: #000000;
