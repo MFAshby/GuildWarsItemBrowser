@@ -4,8 +4,8 @@ var prices = {
   // Split total val into gold, silver & copper
   split_price: function (price) {
     var ncopper = price % 100;
-    var nsilver = Math.round(price / 100) % 100;
-    var ngold = Math.round((price / 10000));
+    var nsilver = Math.floor(price / 100) % 100;
+    var ngold = Math.floor(price / 10000));
     return {ngold:ngold, nsilver:nsilver, ncopper: ncopper};
   },
 
