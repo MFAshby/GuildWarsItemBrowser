@@ -74,6 +74,11 @@ $(document).ready(function (){
                 item_data.sells_price = price_data.sells.unit_price;
               }
             });
+
+            var tracked_item = item_tracker.get_tracked_item(item_id);
+            var notification_setting = tracked_item.notification_setting || {};
+            var notified = notification_setting.notified || "";
+            item_data.notified = item_data;
           });
 
           // Add the formatter for prices

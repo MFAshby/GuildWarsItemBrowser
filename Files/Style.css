@@ -179,7 +179,7 @@ img.item_list_image {
 }
 
 .Basic {
-  color:	#ffffff;  
+  color:	#ffffff;
 }
 
 .Fine {
@@ -204,6 +204,11 @@ img.item_list_image {
 
 .Legendary {
   color:	#8e39d5;
+}
+
+/* Colour for notified items */
+.notified {
+  background: #CC6699;
 }
 
 #tracker_close_button {
@@ -296,12 +301,4 @@ img.item_list_image {
   float: right;
   width: 19px;
   height: 19px;
-}
-
-#notification_panel {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 300px;
-    background-color: red;
 }
