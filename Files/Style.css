@@ -206,11 +206,6 @@ img.item_list_image {
   color:	#8e39d5;
 }
 
-/* Colour for notified items */
-.notified {
-  background: #CC6699;
-}
-
 #tracker_close_button {
   color: #000000;
   float: right;
@@ -301,4 +296,9 @@ img.item_list_image {
   float: right;
   width: 19px;
   height: 19px;
+}
+
+/* Colour for notified items */
+.notified {
+  background: #CC6699 !important;
 }

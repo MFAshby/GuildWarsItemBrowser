@@ -3,7 +3,7 @@
 var item_tracker = {
 
   //API URLs.
-  item_url_root: "https://api.guildwars2.com/v2/items/?ids=",
+  item_url_root: "https://api.guildwars2.com/v2/items?ids=",
 
   price_url_root: "https://api.guildwars2.com/v2/commerce/prices?ids=",
 

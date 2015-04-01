@@ -78,7 +78,7 @@ $(document).ready(function (){
             var tracked_item = item_tracker.get_tracked_item(item_id);
             var notification_setting = tracked_item.notification_setting || {};
             var notified = notification_setting.notified || "";
-            item_data.notified = item_data;
+            item_data.notified = notified;
           });
 
           // Add the formatter for prices
