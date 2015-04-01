@@ -4,13 +4,17 @@ $(document).ready(function (){
 
   // Reference items in the HTML document
   var $add_button = $('#tracker_add_button');
+  var $refresh_button = $('#tracker_refresh_button');
   var $close_button = $('#tracker_close_button');
   var $transparency_button = $('#tracker_transparency_button');
   var $item_list = $('#tracked_items_list');
-  var default_background_color = body_background()
+  var default_background_color = body_background();
+  var refresh_countdown;
+  var refresh_interval;
 
   // Register action handlers
   $add_button.click(add_button_clicked);
+  $refresh_button.click(rebuild_item_list);
   $close_button.click(close_button_clicked);
   $transparency_button.click(transparency_button_clicked);
 
@@ -35,6 +39,14 @@ $(document).ready(function (){
     document.body.style.backgroundColor = existing_background === 'transparent' ? default_background_color : 'transparent';
   };
 
+  function countdown() {
+    refresh_countdown--;
+    $refresh_button.html("Refresh (" + refresh_countdown + ")");
+    if (refresh_countdown <= 0) {
+      rebuild_item_list()
+    };
+  };
+
   function body_background() {
     return document.body.style.backgroundColor;
   };
@@ -47,7 +59,9 @@ $(document).ready(function (){
   };
 
   function rebuild_item_list(){
+    clearInterval(refresh_interval);
     console.log("rebuild_item_list");
+    $refresh_button.html("Refreshing...");
     var tracked_items = item_tracker.get_tracked_items();
     var tracked_item_ids = Object.keys(tracked_items);
 
@@ -108,6 +122,11 @@ $(document).ready(function (){
               });
             }
           });
+
+        // Update refresh countdown regularly.
+        refresh_countdown = 60;
+        $refresh_button.html("Refresh");
+        refresh_interval = setInterval(countdown, 1000);
         });
       });
     };
