@@ -11,19 +11,8 @@
     "description": "Get notified when your items reach the right price!"
   },
   "data": {
-    "start_window": "WidgetWindow",
+    "start_window": "ListWindow",
     "windows": {
-      "WidgetWindow": {
-        "file": "Files/WidgetWindow.html",
-        "transparent": true,
-        "resizable": false,
-        "size": {"width": 100, "height": 50},
-        "externally_connectable":  {
-          "matches": [
-            "https://api.guildwars2.com*"
-          ]
-        }
-      },
       "ListWindow": {
         "file": "Files/ListWindow.html",
         "transparent": true,
