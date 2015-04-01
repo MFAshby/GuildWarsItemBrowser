@@ -86,13 +86,11 @@ $(document).ready(function (){
               if (item_id === price_data.id) {
                 item_data.buys_price = price_data.buys.unit_price;
                 item_data.sells_price = price_data.sells.unit_price;
+                if (should_notify_price(price_data)) {
+                  item_data.notified = "notified";
+                }
               }
             });
-
-            var tracked_item = item_tracker.get_tracked_item(item_id);
-            var notification_setting = tracked_item.notification_setting || {};
-            var notified = notification_setting.notified || "";
-            item_data.notified = notified;
           });
 
           // Add the formatter for prices
@@ -136,7 +134,7 @@ $(document).ready(function (){
   rebuild_item_list();
 
   // This window is always around, so it's reponsible for checking prices and popping up if anything hits a target.
-  function handle_price(price_data) {
+  function should_notify_price(price_data) {
     try
     {
       var tracked_item = item_tracker.get_tracked_item(price_data.id);
@@ -155,25 +153,11 @@ $(document).ready(function (){
 
       if ((notification_setting.operator === "gt" && current_price > target_price)
           || (notification_setting.operator === "lt" && current_price < target_price)) {
-        notification_setting.notified = "notified";
-        item_tracker.add_tracked_item(price_data.id, notification_setting);
-        show_list_window();
+        return true;
       }
     } catch (err) {
       console.log(err);
     }
+    return false;
   }
-
-  function check_prices() {
-    var tracked_items = item_tracker.get_tracked_items();
-    var tracked_item_ids = Object.keys(tracked_items);
-
-    $.get(item_tracker.price_url_root + tracked_item_ids.join(","), function(prices_data) {
-      prices_data.forEach(function (price_data) {
-        handle_price(price_data);
-      });
-      setTimeout(check_prices, 15000);
-    });
-  }
-  setTimeout(check_prices, 5000);
 });
