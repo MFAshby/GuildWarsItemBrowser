@@ -268,15 +268,10 @@ img.item_list_image {
   float: right;
   clear: right;
 }
+
 .notification_settings {
-    position: absolute;
-    left: 10px;
-    top: 10px;
-    width: 300px;
-    min-width: 300px;
-    min-height: 30px;
-    background-color: #555555;
-    padding: 5px;
+	background: linear-gradient(to right,  #322b26 0%,#433f33 32%,#514c45 100%); /* W3C */
+  padding: 5px;
 }
 
 .notification_number_entry {
@@ -301,4 +296,18 @@ img.item_list_image {
 /* Colour for notified items */
 .notified {
   background: #CC6699 !important;
+}
+
+
+/* Resize handle in the bottom right */
+.resize_grip {
+  position: absolute;
+  background-color: #FF0000;
+  background: url(images/resize.png);
+  opacity: 0.4;
+	width: 18px;
+	height: 18px;
+	bottom: 0;
+	right: 0;
+	cursor: nwse-resize;
 }

@@ -39,7 +39,7 @@
         "file": "Files/NotificationSettingWindow.html",
         "transparent": true,
         "resizable": true,
-        "size": {"width": 350, "height": 500},
+        "size": {"width": 350, "height": 150},
         "externally_connectable":  {
           "matches": [
             "https://api.guildwars2.com*"
