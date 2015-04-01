@@ -1,7 +1,4 @@
 $(document).ready(function() {
-
-  const item_url_root = "https://api.guildwars2.com/v2/items/?ids=";
-
   var $notification_div = $('#notification_settings');
   var $buy_sell_select = $('#buy_sell_select');
   var $item_name = $('#notification_item_name');
@@ -47,7 +44,7 @@ $(document).ready(function() {
     }
 
     // Also actually show the name of the item. That would help.
-    $.get(item_url_root + item_id, function(item_data) {
+    $.get(item_tracker.item_url_root + item_id, function(item_data) {
       $item_name.text(item_data[0].name);
     });
   }
