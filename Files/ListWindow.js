@@ -9,6 +9,7 @@ $(document).ready(function (){
   var $transparency_button = $('#tracker_transparency_button');
   var $reveal_button = $('#tracker_reveal_button');
   var $item_list = $('#tracked_items_list');
+  var $buttons_container = $('#tracker_buttons_container');
   var default_background_color = body_background();
   var refresh_countdown;
   var refresh_interval;
@@ -43,6 +44,7 @@ $(document).ready(function (){
 
   function reveal_button_clicked() {
     $reveal_button.toggleClass('hidden');
+    $buttons_container.toggleClass('hidden');
     $item_list.slideToggle(500);
   };
 
