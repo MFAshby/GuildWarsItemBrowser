@@ -72,9 +72,6 @@ $(document).ready(function (){
     var tracked_items = item_tracker.get_tracked_items();
     var tracked_item_ids = Object.keys(tracked_items);
 
-    // Clear down the existing list
-    $item_list.empty();
-
     // Start loading indicator
     if (tracked_item_ids.length > 0) {
       $item_list.append($('<span>Loading...</span>'));
