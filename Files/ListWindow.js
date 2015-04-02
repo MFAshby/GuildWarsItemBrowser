@@ -7,6 +7,7 @@ $(document).ready(function (){
   var $refresh_button = $('#tracker_refresh_button');
   var $close_button = $('#tracker_close_button');
   var $transparency_button = $('#tracker_transparency_button');
+  var $reveal_button = $('#tracker_reveal_button');
   var $item_list = $('#tracked_items_list');
   var default_background_color = body_background();
   var refresh_countdown;
@@ -17,6 +18,7 @@ $(document).ready(function (){
   $refresh_button.click(rebuild_item_list);
   $close_button.click(close_button_clicked);
   $transparency_button.click(transparency_button_clicked);
+  $reveal_button.click(reveal_button_clicked);
 
   // Register data change handler
   item_tracker.reg_changes(item_tracker.tracked_items_key, rebuild_item_list);
@@ -37,6 +39,11 @@ $(document).ready(function (){
   function transparency_button_clicked() {
     existing_background = body_background();
     document.body.style.backgroundColor = existing_background === 'transparent' ? default_background_color : 'transparent';
+  };
+
+  function reveal_button_clicked() {
+    $reveal_button.toggleClass('hidden');
+    $item_list.slideToggle(500);
   };
 
   function countdown() {
@@ -88,6 +95,10 @@ $(document).ready(function (){
                 item_data.sells_price = price_data.sells.unit_price;
                 if (should_notify_price(price_data)) {
                   item_data.notified = "notified";
+                  // Also unhide the list if required.
+                  if (!$item_list.is(":visible")) {
+                    reveal_button_clicked();
+                  }
                 }
               }
             });
